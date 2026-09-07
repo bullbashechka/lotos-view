@@ -5,15 +5,16 @@
     "**/*"
   ],
   "exclude": [
-    "dist",
-    "storybook-static"
+    "dist"
   ],
   "compilerOptions": {
     "baseUrl": ".",
     "jsx": "react-jsx",
     "jsxImportSource": "react",
     "paths": {
-      "@/*": ["./src/*"]
+      "@/*": [
+        "./src/*"
+      ]
     }
   }
 }

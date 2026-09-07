@@ -1,46 +1,54 @@
 ---
-import AudienceSection from '@/components/landing/AudienceSection.astro'
-import CtaSection from '@/components/landing/CtaSection.astro'
-import FaqSection from '@/components/landing/FaqSection.astro'
-import FeatureGrid from '@/components/landing/FeatureGrid.astro'
-import HeroSection from '@/components/landing/HeroSection.astro'
-import LaunchKitSection from '@/components/landing/LaunchKitSection.astro'
-import ProcessSection from '@/components/landing/ProcessSection.astro'
-import ProofSection from '@/components/landing/ProofSection.astro'
-import ScenariosSection from '@/components/landing/ScenariosSection.astro'
-import SiteFooter from '@/components/landing/SiteFooter.astro'
-import SiteHeader from '@/components/landing/SiteHeader.astro'
-import BaseLayout from '@/layouts/BaseLayout.astro'
-import { getSecondaryAction, TEMPLATE_ACTION } from '@/lib/landing-actions'
-
-const title = 'ЙЙ — шаблон для создания сайтов и приложений с ИИ'
-const description =
-  'Соберите лендинг, веб- или мобильное приложение с ИИ. Технологии, структура проекта, компоненты и проверки уже настроены.'
-const publicWebsiteUrl = import.meta.env.PUBLIC_WEBSITE_URL
-const publicWebappUrl = import.meta.env.PUBLIC_WEBAPP_URL
-const canonicalUrl = publicWebsiteUrl
-  ? new URL(Astro.url.pathname, publicWebsiteUrl).toString()
-  : undefined
-const secondaryAction = getSecondaryAction(publicWebappUrl)
+import BaseLayout from '../layouts/BaseLayout.astro';
+import DemoEnquiry from '../features/enquiry/DemoEnquiry';
+import HouseTour from '../features/tour/HouseTour';
+import PlanExplorer from '../features/plan/PlanExplorer.astro';
+import Gallery from '../features/gallery/Gallery.astro';
+import MediaViewer from '../features/gallery/MediaViewer.astro';
+import { house } from '../data/house';
 ---
-
-<BaseLayout canonicalUrl={canonicalUrl} description={description} title={title}>
-  <SiteHeader primaryHref={TEMPLATE_ACTION.href} primaryLabel={TEMPLATE_ACTION.label} />
-  <main id="main-content">
-    <HeroSection
-      primaryHref={TEMPLATE_ACTION.href}
-      primaryLabel={TEMPLATE_ACTION.label}
-      secondaryHref={secondaryAction.href}
-      secondaryLabel={secondaryAction.label}
-    />
-    <FeatureGrid />
-    <AudienceSection />
-    <LaunchKitSection />
-    <ProcessSection />
-    <ScenariosSection />
-    <ProofSection />
-    <FaqSection />
-    <CtaSection primaryHref={TEMPLATE_ACTION.href} primaryLabel={TEMPLATE_ACTION.label} />
+<BaseLayout>
+ <div id="smooth-wrapper"><div id="smooth-content">
+  <header class="site-header wrap">
+    <a class="wordmark" href="#" aria-label="Tan House — в начало">TAN HOUSE<span>ДОМА ДЛЯ ЖИЗНИ</span></a>
+    <nav aria-label="Основная навигация"><a href="#tour">Прогулка</a><a href="#plan">Планировка</a><a href="#gallery">Детали</a></nav>
+    <a class="header-link" href="#request">Хочу такой дом <span aria-hidden="true">↗</span></a>
+  </header>
+  <main id="main">
+    <section class="hero wrap" aria-labelledby="hero-title">
+      <div class="hero-heading"><div><p class="eyebrow"><span></span> ОДИН ЭТАЖ. ЦЕЛАЯ ЖИЗНЬ.</p><h1 id="hero-title">Лотос<span class="title-dot">.</span></h1></div>
+        <div class="hero-description"><p>Место, где хочется<br />быть собой.</p><a class="round-link" href="#tour"><span>Посмотреть дом</span><span class="round-arrow" aria-hidden="true">↘</span></a></div>
+      </div>
+      <div class="hero-image"><img src="/media/13_front.webp" alt="Одноэтажный дом Лотос с деревянной отделкой фасада, крыльцом и дорожкой в саду" width="1600" height="900" fetchpriority="high" />
+        <div class="hero-caption"><span>ТЁПЛЫЙ ДОМ. ПРОДУМАННОЕ ПРОСТРАНСТВО.</span><span>ПРОЕКТ / 01</span></div>
+      </div>
+      <div class="hero-foot"><p>Один этаж · три спальни · отдельный кабинет<br />Кухня-гостиная 41,12 м² с выходом на террасу.</p><a href="#tour">Листайте, чтобы познакомиться <span aria-hidden="true">↓</span></a></div>
+    </section>
+    <section id="tour" aria-labelledby="tour-title">
+      <div class="wrap intro-section tour-intro"><div><p class="eyebrow">01 / ПРОГУЛКА ПО ДОМУ</p><h2 id="tour-title">Заходите.<br /><span>Вы почти дома.</span></h2></div><p>Листайте — камера движется вместе с вами.<br />Или сразу выберите интересную вам комнату.</p></div>
+      <HouseTour client:load />
+    </section>
+    <section id="plan" class="plan-section" aria-labelledby="plan-title"><div class="wrap">
+      <div class="section-heading"><div><p class="eyebrow">02 / ПЛАНИРОВКА</p><h2 id="plan-title">У каждого — своё место.<br /><span>У всех — общий дом.</span></h2></div><p>Общая зона объединяет дом.<br />Спальни оставляют пространство для себя.</p></div>
+      <PlanExplorer />
+    </div></section>
+    <section id="about" class="about-section wrap" aria-labelledby="about-title">
+      <div class="about-image"><img src="/media/12_terrace.webp" alt="Крытая терраса с плетёными креслами и видом в сад" loading="lazy" width="1280" height="720" /><span>БОЛЬШЕ ВРЕМЕНИ ДЛЯ СЕБЯ</span></div>
+      <div class="about-copy"><p class="eyebrow">03 / О ПРОЕКТЕ</p><h2 id="about-title">Дом для обычных<br /><span>счастливых дней.</span></h2><p>Совместные завтраки в кухне-гостиной. Свой уголок для работы. Тишина спальни и вечерний воздух на террасе.</p><p>«Лотос» — одноэтажный проект Tan House, в котором общие и личные пространства дополняют друг друга.</p><div class="facts-grid">{house.facts.map(f=><div><strong>{f.value}</strong><span>{f.label}</span></div>)}</div><a class="text-link" href="#tour">Вернуться к прогулке <span aria-hidden="true">↗</span></a></div>
+    </section>
+    <section id="gallery" class="gallery-section wrap" aria-labelledby="gallery-title"><div class="section-heading"><div><p class="eyebrow">04 / ДЕТАЛИ</p><h2 id="gallery-title">Свет. Фактуры.<br /><span>Ощущение дома.</span></h2></div><p>Рассмотрите пространства в своём темпе.<br />14 визуализаций — от фасада до террасы.</p></div>
+      <Gallery />
+    </section>
+    <section id="request" class="enquiry-section" aria-labelledby="enquiry-title"><div class="wrap enquiry-layout">
+      <div class="enquiry-copy"><p class="eyebrow">05 / ВАШ БУДУЩИЙ ДОМ</p><h2 id="enquiry-title">Представили себя здесь?<br /><span>Сделаем первый шаг.</span></h2><p>Расскажите, где вы хотите построить «Лотос». Начните с короткой заявки — детали дома можно обсудить позже.</p><div class="enquiry-project"><span>ВАШ ПРОЕКТ</span><strong>Лотос</strong><p>Один этаж · три спальни · терраса</p></div></div>
+      <DemoEnquiry client:load />
+    </div></section>
   </main>
-  <SiteFooter />
+  <footer class="site-footer"><div class="wrap footer-layout"><div><a class="wordmark" href="#">TAN HOUSE<span>ДОМА ДЛЯ ЖИЗНИ</span></a><p>Лотос. Визуальная презентация проекта.</p></div><p class="fineprint">Изображения и видео — концептуальные визуализации.<br />Детали отделки и комплектацию необходимо уточнять.</p><a href="#" class="footer-top">Наверх ↑</a></div></footer>
+ </div></div>
+  <MediaViewer />
+  <script>
+    import { initPageMotion } from '../lib/page-motion';
+    initPageMotion();
+  </script>
 </BaseLayout>

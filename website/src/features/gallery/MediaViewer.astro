@@ -1,0 +1,93 @@
+<dialog class="media-viewer" aria-labelledby="viewer-title">
+ <div class="viewer-shell">
+  <div class="viewer-top"><span class="eyebrow">TAN HOUSE / ЛОТОС</span><button class="viewer-close" autofocus aria-label="Закрыть просмотр">Закрыть <span aria-hidden="true">×</span></button></div>
+  <div class="viewer-stage"><img class="viewer-image" alt="" width="1280" height="720" /><div class="viewer-plan" hidden></div></div>
+  <div class="viewer-bottom"><div><p class="eyebrow" id="viewer-count"></p><h2 id="viewer-title"></h2></div><div class="viewer-arrows"><button class="icon-button" aria-label="Предыдущее изображение">←</button><button class="icon-button" aria-label="Следующее изображение">→</button></div></div>
+ </div>
+</dialog>
+<script>
+ import { gsap } from 'gsap';
+ import { Flip } from 'gsap/Flip';
+ import { ScrollTrigger } from 'gsap/ScrollTrigger';
+ import tour from '../../data/tour.json';
+ import { pauseSmoothScroll } from '../../lib/smooth-scroll';
+ gsap.registerPlugin(Flip);
+ const dialog = document.querySelector<HTMLDialogElement>('.media-viewer')!;
+ const image = dialog.querySelector<HTMLImageElement>('.viewer-image')!;
+ const plan = dialog.querySelector<HTMLElement>('.viewer-plan')!;
+ const arrows = dialog.querySelector<HTMLElement>('.viewer-arrows')!;
+ const closeButton = dialog.querySelector<HTMLButtonElement>('.viewer-close')!;
+ const previous = dialog.querySelector<HTMLButtonElement>('[aria-label="Предыдущее изображение"]')!;
+ const next = dialog.querySelector<HTMLButtonElement>('[aria-label="Следующее изображение"]')!;
+ let index = 0, openingIndex = 0, closing = false, planMode = false;
+ let origin: HTMLElement | null = null;
+ let originImage: HTMLImageElement | null = null;
+ let overflow = '';
+ const reduce = () => matchMedia('(prefers-reduced-motion: reduce)').matches;
+ function render() {
+  gsap.killTweensOf(image); gsap.set(image, { clearProps: 'all' });
+  const scene = tour.scenes[index]!;
+  image.src = scene.poster; image.alt = scene.name;
+  dialog.querySelector('#viewer-title')!.textContent = scene.name;
+  dialog.querySelector('#viewer-count')!.textContent = `${String(index + 1).padStart(2, '0')} / 14 · ВИЗУАЛИЗАЦИЯ`;
+  previous.disabled = index === 0; next.disabled = index === tour.scenes.length - 1;
+ }
+ function open(element: HTMLElement, selected: number | null) {
+  if (dialog.open) return;
+  origin = element; originImage = element.querySelector('img');
+  planMode = selected === null; closing = false;
+  image.hidden = planMode; plan.hidden = !planMode; arrows.hidden = planMode;
+  let state: ReturnType<typeof Flip.getState> | undefined;
+  if (!planMode) {
+   index = selected!; openingIndex = index; render();
+   if (originImage && !reduce()) {
+    originImage.dataset.flipId = 'viewer-photo'; image.dataset.flipId = 'viewer-photo';
+    state = Flip.getState(originImage);
+   }
+  } else {
+   const drawing = document.querySelector('[data-plan-drawing]')!.cloneNode(true) as SVGElement;
+   drawing.removeAttribute('data-plan-drawing'); drawing.setAttribute('role', 'img');
+   drawing.setAttribute('aria-label', 'Планировка дома Лотос');
+   drawing.querySelectorAll('a').forEach(link => link.remove());
+   plan.replaceChildren(drawing);
+   dialog.querySelector('#viewer-title')!.textContent = 'Всё на одном этаже';
+   dialog.querySelector('#viewer-count')!.textContent = 'ПЛАНИРОВКА / ЛОТОС';
+  }
+  overflow = document.documentElement.style.overflow;
+  pauseSmoothScroll(true);
+  document.documentElement.style.overflow = 'hidden';
+  dialog.showModal(); closeButton.focus({ preventScroll: true });
+  if (state) Flip.from(state, { targets: image, scale: true, duration: .55, ease: 'power3.inOut', onComplete: () => { gsap.set(image, { clearProps: 'transform,width,height' }); } });
+ }
+ function finish() {
+  dialog.close();
+  document.documentElement.style.overflow = overflow;
+  pauseSmoothScroll(false);
+  gsap.set(image, { clearProps: 'all' });
+  origin?.focus({ preventScroll: true }); closing = false;
+ }
+ function close() {
+  if (!dialog.open || closing) return;
+  closing = true; gsap.killTweensOf(image);
+  const bounds = originImage?.getBoundingClientRect();
+  if (!planMode && index === openingIndex && originImage && bounds && bounds.bottom > 0 && bounds.top < innerHeight && !reduce()) {
+   Flip.fit(image, originImage, { scale: true, duration: .3, ease: 'power2.inOut', onComplete: finish });
+  } else finish();
+ }
+ function step(direction: number) {
+  if (closing || planMode) return;
+  index = Math.max(0, Math.min(tour.scenes.length - 1, index + direction)); render();
+  if (!reduce()) gsap.fromTo(image, { opacity: .4 }, { opacity: 1, duration: .22, clearProps: 'opacity' });
+ }
+ document.querySelectorAll<HTMLElement>('[data-gallery-index]').forEach(link => link.addEventListener('click', event => { event.preventDefault(); open(link, Number(link.dataset.galleryIndex)); }));
+ document.querySelector<HTMLElement>('[data-plan-viewer]')!.addEventListener('click', event => { event.preventDefault(); open(event.currentTarget as HTMLElement, null); });
+ closeButton.addEventListener('click', close);
+ dialog.addEventListener('cancel', event => { event.preventDefault(); close(); });
+ dialog.addEventListener('click', event => { if (event.target === dialog) close(); });
+ previous.addEventListener('click', () => step(-1)); next.addEventListener('click', () => step(1));
+ dialog.addEventListener('keydown', event => {
+  if (event.key === 'ArrowLeft') { event.preventDefault(); step(-1); }
+  if (event.key === 'ArrowRight') { event.preventDefault(); step(1); }
+ });
+ document.querySelector('.gallery-disclosure')?.addEventListener('toggle', () => ScrollTrigger.refresh());
+</script>

@@ -1,0 +1,149 @@
+{
+  "duration": 41.25,
+  "fps": 24,
+  "transition": 0.25,
+  "desktop": "/media/tour-desktop.mp4",
+  "mobile": "/media/tour-mobile.mp4",
+  "scenes": [
+    {
+      "id": "01_front",
+      "name": "Главный фасад",
+      "subtitle": "Знакомство с домом",
+      "poster": "/media/13_front.webp",
+      "start": 0,
+      "end": 3.041667,
+      "source": "01_front.mp4",
+      "frames": 73
+    },
+    {
+      "id": "02_foyer",
+      "name": "Прихожая",
+      "subtitle": "С порога — ощущение дома",
+      "poster": "/media/01_foyer.webp",
+      "start": 2.791667,
+      "end": 5.833333,
+      "source": "02_foyer.mp4",
+      "frames": 73
+    },
+    {
+      "id": "04_living",
+      "name": "Кухня-гостиная",
+      "subtitle": "Пространство для жизни вместе",
+      "poster": "/media/05_living.webp",
+      "start": 5.583333,
+      "end": 10.625,
+      "source": "04_living.mp4",
+      "frames": 121
+    },
+    {
+      "id": "05_office",
+      "name": "Кабинет",
+      "subtitle": "Место для своих идей",
+      "poster": "/media/03_office.webp",
+      "start": 10.375,
+      "end": 13.416667,
+      "source": "05_office.mp4",
+      "frames": 73
+    },
+    {
+      "id": "03_hall",
+      "name": "Холл",
+      "subtitle": "Переход к личному пространству",
+      "poster": "/media/02_hall.webp",
+      "start": 13.166667,
+      "end": 16.208333,
+      "source": "03_hall.mp4",
+      "frames": 73
+    },
+    {
+      "id": "06_bedroom_right",
+      "name": "Правая спальня",
+      "subtitle": "Тихое утро, мягкий свет",
+      "poster": "/media/06_bedroom_right.webp",
+      "start": 15.958333,
+      "end": 19.0,
+      "source": "06_bedroom_right.mp4",
+      "frames": 73
+    },
+    {
+      "id": "07_bedroom_left",
+      "name": "Левая спальня",
+      "subtitle": "Комната для отдыха",
+      "poster": "/media/07_bedroom_left.webp",
+      "start": 18.75,
+      "end": 21.791667,
+      "source": "07_bedroom_left.mp4",
+      "frames": 73
+    },
+    {
+      "id": "08_master",
+      "name": "Мастер-спальня",
+      "subtitle": "Личное пространство",
+      "poster": "/media/08_master.webp",
+      "start": 21.541667,
+      "end": 24.583333,
+      "source": "08_master.mp4",
+      "frames": 73
+    },
+    {
+      "id": "09_wardrobe",
+      "name": "Гардеробная",
+      "subtitle": "Всё на своём месте",
+      "poster": "/media/11_wardrobe.webp",
+      "start": 24.333333,
+      "end": 27.375,
+      "source": "09_wardrobe.mp4",
+      "frames": 73
+    },
+    {
+      "id": "10_ensuite",
+      "name": "Личный санузел",
+      "subtitle": "Часть мастер-блока",
+      "poster": "/media/10_ensuite.webp",
+      "start": 27.125,
+      "end": 30.166667,
+      "source": "10_ensuite.mp4",
+      "frames": 73
+    },
+    {
+      "id": "11_bath",
+      "name": "Общий санузел",
+      "subtitle": "Спокойные оттенки, простые формы",
+      "poster": "/media/09_bath.webp",
+      "start": 29.916667,
+      "end": 32.958333,
+      "source": "11_bath.mp4",
+      "frames": 73
+    },
+    {
+      "id": "12_utility",
+      "name": "Техническое помещение",
+      "subtitle": "Практичная сторона дома",
+      "poster": "/media/04_utility.webp",
+      "start": 32.708333,
+      "end": 35.75,
+      "source": "12_utility.mp4",
+      "frames": 73
+    },
+    {
+      "id": "13_terrace",
+      "name": "Терраса",
+      "subtitle": "Жизнь продолжается снаружи",
+      "poster": "/media/12_terrace.webp",
+      "start": 35.5,
+      "end": 38.541667,
+      "source": "13_terrace.mp4",
+      "frames": 73
+    },
+    {
+      "id": "14_rear",
+      "name": "Вид со двора",
+      "subtitle": "Дом, в который хочется вернуться",
+      "poster": "/media/14_rear.webp",
+      "start": 38.291667,
+      "end": 41.25,
+      "source": "14_rear.mp4",
+      "frames": 73
+    }
+  ]
+}

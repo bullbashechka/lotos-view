@@ -1,0 +1,74 @@
+---
+import { house } from '../../data/house';
+import tour from '../../data/tour.json';
+// Coordinates refer to the supplied 1200×1510 reference, not a reconstructed floor plan.
+const zones: Record<string, string> = {
+ '04_living': '445,255 970,255 970,465 716,465 716,740 445,740',
+ '08_master': '205,765 424,765 424,1055 205,1055',
+ '06_bedroom_right': '738,515 977,515 977,784 738,784',
+ '07_bedroom_left': '208,252 423,252 423,525 208,525',
+ '05_office': '744,938 979,938 979,1054 744,1054',
+ '09_wardrobe': '445,762 609,762 609,895 445,895',
+ '11_bath': '207,552 333,552 333,742 207,742',
+ '10_ensuite': '445,909 609,909 609,1054 445,1054',
+ '12_utility': '744,826 979,826 979,922 744,922',
+ '02_foyer': '630,767 714,767 714,1055 630,1055',
+ '03_hall': '356,550 424,550 424,744 356,744',
+ '13_terrace': '410,80 955,80 955,215 410,215',
+};
+const first = house.rooms[0]!;
+const firstScene = tour.scenes.find(scene => scene.id === first.scene)!;
+---
+<div class="plan-explorer" data-plan-explorer>
+ <div class="plan-figure">
+  <div class="plan-sheet">
+   <svg data-plan-drawing viewBox="165 35 860 1210" role="group" aria-label="План Лотоса. Выберите помещение">
+    <image href="/media/plan.webp" width="1200" height="1510" />
+    {house.rooms.map(room => <a href={tour.scenes.find(scene => scene.id === room.scene)!.poster} data-room-id={room.scene} aria-label={`${room.name}, ${room.area} м²`} aria-current={room.scene === first.scene ? 'true' : undefined}><polygon points={zones[room.scene]}><title>{room.name} · {room.area} м²</title></polygon></a>)}
+   </svg>
+  </div>
+  <a class="text-link" href="/media/plan.webp" data-plan-viewer>Рассмотреть планировку <span aria-hidden="true">↗</span></a>
+  <p class="fineprint">Выберите помещение на плане или в списке.</p>
+ </div>
+ <div class="plan-description">
+  <div class="plan-preview">
+   <img data-room-preview src={firstScene.poster} alt={first.name} width="1280" height="720" loading="lazy" />
+   <div><p class="eyebrow">ВАШЕ ПРОСТРАНСТВО</p><h3 data-room-name>{first.name}</h3><span data-room-area>{first.area} м²</span></div>
+  </div>
+  <a class="text-link" href="#tour" data-room-tour={first.scene}>Посмотреть эту комнату <span aria-hidden="true">↗</span></a>
+  <div class="room-list">{house.rooms.map(room => <a href={tour.scenes.find(scene => scene.id === room.scene)!.poster} data-room-id={room.scene} aria-current={room.scene === first.scene ? 'true' : undefined}><span>{room.name}</span><span>{room.area} <small>м²</small></span></a>)}</div>
+  <p class="fineprint">По исходной планировке. Сумма внутренних помещений — 114,28 м²; терраса указана отдельно. Общую площадь проекта необходимо уточнить.</p>
+ </div>
+</div>
+<script>
+ import { gsap } from 'gsap';
+ import { house } from '../../data/house';
+ import tour from '../../data/tour.json';
+ import { tourSceneEvent } from '../tour/navigation';
+ const root = document.querySelector<HTMLElement>('[data-plan-explorer]')!;
+ const preview = root.querySelector<HTMLImageElement>('[data-room-preview]')!;
+ const jump = root.querySelector<HTMLAnchorElement>('[data-room-tour]')!;
+ root.querySelectorAll<HTMLElement | SVGElement>('[data-room-id]').forEach(link => {
+  link.addEventListener('click', event => {
+   event.preventDefault();
+   const id = link.dataset.roomId;
+   const room = house.rooms.find(entry => entry.scene === id)!;
+   const scene = tour.scenes.find(entry => entry.id === id)!;
+   root.querySelectorAll('[data-room-id]').forEach(item => {
+    if (item.getAttribute('data-room-id') === id) item.setAttribute('aria-current', 'true');
+    else item.removeAttribute('aria-current');
+   });
+   preview.src = scene.poster; preview.alt = room.name;
+   root.querySelector('[data-room-name]')!.textContent = room.name;
+   root.querySelector('[data-room-area]')!.textContent = `${room.area} м²`;
+   jump.dataset.roomTour = room.scene;
+   gsap.killTweensOf(preview);
+   gsap.set(preview, { clearProps: 'opacity,transform' });
+   if (!matchMedia('(prefers-reduced-motion: reduce)').matches) gsap.fromTo(preview, { opacity: .5, y: 8 }, { opacity: 1, y: 0, duration: .3, clearProps: 'opacity,transform' });
+  });
+ });
+ jump.addEventListener('click', event => {
+  event.preventDefault();
+  window.dispatchEvent(new CustomEvent(tourSceneEvent, { detail: jump.dataset.roomTour }));
+ });
+</script>
