@@ -1,9 +1,10 @@
 ---
+import Arrow from '../../components/ui/Arrow.astro';
 import tour from '../../data/tour.json';
 const featured = [2, 7, 12, 13];
 const remaining = tour.scenes.map((_, i) => i).filter(i => !featured.includes(i));
 ---
 <div class="gallery-featured">
- {featured.map((index, position) => <a class={`gallery-card gallery-card-${position + 1}`} href={tour.scenes[index]!.poster} data-gallery-index={index}><div class="gallery-image"><img src={tour.scenes[index]!.poster} alt={tour.scenes[index]!.name} loading="lazy" width="1280" height="720" /></div><span><small>{String(index + 1).padStart(2, '0')}</small>{tour.scenes[index]!.name}<span aria-hidden="true">↗</span></span></a>)}
+ {featured.map((index, position) => <a class={`gallery-card gallery-card-${position + 1}`} href={tour.scenes[index]!.poster} data-gallery-index={index}><div class="gallery-image"><img src={tour.scenes[index]!.poster} alt={tour.scenes[index]!.name} loading="lazy" width="1280" height="720" /></div><span><small>{String(index + 1).padStart(2, '0')}</small>{tour.scenes[index]!.name}<span aria-hidden="true"><Arrow direction="up-right" /></span></span></a>)}
 </div>
-<details class="gallery-disclosure"><summary>Все пространства дома <span>14 визуализаций <b aria-hidden="true">+</b></span></summary><div class="gallery-grid">{remaining.map(index => <a class="gallery-card" href={tour.scenes[index]!.poster} data-gallery-index={index}><div class="gallery-image"><img src={tour.scenes[index]!.poster} alt={tour.scenes[index]!.name} loading="lazy" width="1280" height="720" /></div><span><small>{String(index + 1).padStart(2, '0')}</small>{tour.scenes[index]!.name}<span aria-hidden="true">↗</span></span></a>)}</div></details>
+<details class="gallery-disclosure"><summary>Все пространства дома <span>14 визуализаций <b aria-hidden="true">+</b></span></summary><div class="gallery-grid">{remaining.map(index => <a class="gallery-card" href={tour.scenes[index]!.poster} data-gallery-index={index}><div class="gallery-image"><img src={tour.scenes[index]!.poster} alt={tour.scenes[index]!.name} loading="lazy" width="1280" height="720" /></div><span><small>{String(index + 1).padStart(2, '0')}</small>{tour.scenes[index]!.name}<span aria-hidden="true"><Arrow direction="up-right" /></span></span></a>)}</div></details>

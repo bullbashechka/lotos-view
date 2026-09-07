@@ -1,8 +1,11 @@
+---
+import Arrow from '../../components/ui/Arrow.astro';
+---
 <dialog class="media-viewer" aria-labelledby="viewer-title">
  <div class="viewer-shell">
   <div class="viewer-top"><span class="eyebrow">TAN HOUSE / ЛОТОС</span><button class="viewer-close" autofocus aria-label="Закрыть просмотр">Закрыть <span aria-hidden="true">×</span></button></div>
   <div class="viewer-stage"><img class="viewer-image" alt="" width="1280" height="720" /><div class="viewer-plan" hidden></div></div>
-  <div class="viewer-bottom"><div><p class="eyebrow" id="viewer-count"></p><h2 id="viewer-title"></h2></div><div class="viewer-arrows"><button class="icon-button" aria-label="Предыдущее изображение">←</button><button class="icon-button" aria-label="Следующее изображение">→</button></div></div>
+  <div class="viewer-bottom"><div><p class="eyebrow" id="viewer-count"></p><h2 id="viewer-title"></h2></div><div class="viewer-arrows"><button class="icon-button" aria-label="Предыдущее изображение"><Arrow direction="left" /></button><button class="icon-button" aria-label="Следующее изображение"><Arrow direction="right" /></button></div></div>
  </div>
 </dialog>
 <script>

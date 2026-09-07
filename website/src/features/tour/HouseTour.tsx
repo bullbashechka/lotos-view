@@ -183,7 +183,7 @@ export default function HouseTour() {
           {!reduced && !failed && <button className="photo-toggle" onClick={togglePhotos} aria-pressed={photos}><Images size={16} />{photos ? 'К видео' : 'Фото-режим'}</button>}
         </div>}
         {failed && <p className="media-error" role="status">Видео не загрузилось. Все комнаты доступны в фото-режиме.</p>}
-        {!enhanced && <p className="static-hint">Все помещения доступны в <a href="#gallery">галерее визуализаций ↓</a></p>}
+        {!enhanced && <p className="static-hint">Все помещения доступны в <a href="#gallery">галерее визуализаций <ArrowDown size={14} aria-hidden="true" style={{ display: 'inline-block', verticalAlign: 'middle' }} /></a></p>}
       </div>
     </div>
   </div>;
