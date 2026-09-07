@@ -19,7 +19,7 @@ test('static presentation retains content and fallback with an interactive tour 
  assert.equal((html.match(/data-gallery-index=/g)||[]).length,14);
  assert.equal((html.match(/data-room-id=/g)||[]).length,24); // Same twelve rooms on plan and list.
  assert.equal((html.match(/<video /g)||[]).length,1);
- assert.doesNotMatch(html,/<video[^>]*\ssrc=/); // Media is not fetched before the tour approaches.
+ assert.doesNotMatch(html,/<video[^>]*\ssrc=/); // JS chooses media after checking motion preferences.
  assert.doesNotMatch(html,/<video[^>]*autoplay/);
  const manifest=JSON.parse(readFileSync(resolve(dist,'media/tour.json'),'utf8'));
  assert.equal(manifest.scenes.length,14);

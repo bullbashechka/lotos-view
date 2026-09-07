@@ -50,14 +50,28 @@ export default function HouseTour() {
 
   useEffect(() => {
     if (!track.current || !enhanced || photoMode || source) return;
+    let timer: ReturnType<typeof setTimeout> | undefined;
+    const load = () => setSource(window.matchMedia('(max-width: 767px)').matches ? tour.mobile : tour.desktop);
+    // Let the first screen finish loading before starting background video work.
+    const schedule = () => { timer = setTimeout(load, 200); };
+    const connection = (navigator as Navigator & { connection?: { saveData?: boolean } }).connection;
+    if (!connection?.saveData) {
+      if (document.readyState === 'complete') schedule();
+      else window.addEventListener('load', schedule, { once: true });
+    }
+    // Also start immediately if the visitor reaches the tour before window.load.
     const observer = new IntersectionObserver(([entry]) => {
       if (entry?.isIntersecting) {
-        setSource(window.matchMedia('(max-width: 767px)').matches ? tour.mobile : tour.desktop);
+        load();
         observer.disconnect();
       }
     }, { rootMargin: '600px' });
     observer.observe(track.current);
-    return () => observer.disconnect();
+    return () => {
+      observer.disconnect();
+      window.removeEventListener('load', schedule);
+      clearTimeout(timer);
+    };
   }, [enhanced, photoMode, source]);
 
   const go = useCallback((nextIndex: number) => {

@@ -39,6 +39,8 @@
     "test:website": "bun run --cwd website test",
     "test:lotos": "bun run test:website",
     "test:build-contracts": "bun run build:website && bun run --cwd website test:build-contracts",
-    "check": "bun run typecheck && bun run test && bun run test:build-contracts"
+    "check": "bun run typecheck && bun run test && bun run test:build-contracts",
+    "deploy:check": "bun run check && bunx wrangler@4.129.0 deploy --dry-run",
+    "deploy": "bun run deploy:check && bunx wrangler@4.129.0 deploy"
   }
 }

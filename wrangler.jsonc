@@ -1,0 +1,11 @@
+{
+  "name": "tan-house-lotos",
+  "main": "./website/worker/media.js",
+  "compatibility_date": "2026-09-07",
+  "workers_dev": true,
+  "assets": {
+    "directory": "./website/dist",
+    "binding": "ASSETS",
+    "run_worker_first": ["/media/tour-desktop.mp4", "/media/tour-mobile.mp4"]
+  }
+}

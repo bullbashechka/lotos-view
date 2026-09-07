@@ -5,6 +5,9 @@ dist/
 coverage/
 .vite/
 .scratch/
+.wrangler/
+.dev.vars
+.dev.vars.*
 playwright-report/
 test-results/
 
